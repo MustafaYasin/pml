@@ -1,0 +1,17 @@
+Waste container
+Street light
+Tree
+Bench
+Fire hydrant
+Traffic light
+Traffic sign
+Stop sign
+Chair
+Bicycle
+Table
+Ladder
+Parking meter
+Flowerpot
+Car
+Bus
+Motorcycle
