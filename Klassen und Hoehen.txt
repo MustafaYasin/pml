@@ -1,0 +1,18 @@
+Class           :   Height in mm
+
+Waste Container : 0750
+Street Light    : 0100 (Pollerleuchten)
+Tree            : 
+Bench           : 0830 (0430 ohne Lehne)
+Fire Hydrant    : 0750
+Traffic Light   : (Mastleuchten 3-11 meter)
+Traffic Sign    : 2000
+Chair           : 0860
+Bicycle         : 0800
+Table           : 0760
+Ladder          : 
+Parkin Meter    : 1219
+Flowerpot       : 0350
+Car             : 1550
+Bus             : 3010
+Motorcycle      : 1090
