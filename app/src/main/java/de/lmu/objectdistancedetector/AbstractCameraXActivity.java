@@ -14,6 +14,8 @@ import android.speech.tts.TextToSpeech;
 import android.util.Size;
 import android.view.TextureView;
 import android.widget.Toast;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
@@ -27,6 +29,7 @@ import androidx.camera.core.PreviewConfig;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public abstract class AbstractCameraXActivity<R> extends de.lmu.objectdistancedetector.BaseModuleActivity {
@@ -37,6 +40,8 @@ public abstract class AbstractCameraXActivity<R> extends de.lmu.objectdistancede
 
     private long mLastAnalysisResultTime;
     private long mLastOutputTime;
+
+    private Vibrator mVibrator;
 
     protected abstract int getContentViewLayoutId();
 
@@ -69,6 +74,8 @@ public abstract class AbstractCameraXActivity<R> extends de.lmu.objectdistancede
                 }
             }
         });
+
+        mVibrator = (Vibrator) getSystemService(getApplicationContext().VIBRATOR_SERVICE);
 
         mLastOutputTime = SystemClock.elapsedRealtime();
 
@@ -118,11 +125,11 @@ public abstract class AbstractCameraXActivity<R> extends de.lmu.objectdistancede
 
                 //tts test
                 ObjectDetectionActivity.AnalysisResult analysisResult = (ObjectDetectionActivity.AnalysisResult) result;
-                ArrayList<Result> mResults = analysisResult.getResults();
+                ArrayList<Result> results = analysisResult.getResults();
                 Result nearby = null;
-                if (mResults.size() >= 1) {
-                    nearby = mResults.get(0);
-                    for (Result res : mResults) {
+                if (results.size() >= 1) {
+                    nearby = results.get(0);
+                    for (Result res : results) {
                         if (res.dist < nearby.dist) {
                             nearby = res;
                         }
@@ -135,6 +142,23 @@ public abstract class AbstractCameraXActivity<R> extends de.lmu.objectdistancede
                     String outputText = PrePostProcessor.mClasses[nearby.classIndex] + " at " + distCm + " centimeter";
                     Toast.makeText(getApplicationContext(), outputText, Toast.LENGTH_SHORT).show();
                     mTTS.speak(outputText, TextToSpeech.QUEUE_FLUSH, null);
+
+                    //haptic feedback for objects closer than 5m
+                    if(distCm <= 500) {
+                        int interval = (int) (5 - Math.floor(distCm/100.0));
+                        long[] patternArray = new long[interval*2];
+                        int[] a,amplitudesArray = new int[interval*2];
+                        for (int i = 0; i<interval*2; i=i+2) {
+                            patternArray[i] = 250;
+                            patternArray[i+1] = 100;
+                            amplitudesArray[i] = 255;
+                            amplitudesArray[i+1] = 0;
+                        }
+
+                        VibrationEffect vib = VibrationEffect.createWaveform(patternArray, amplitudesArray, -1);
+                        mVibrator.cancel();
+                        mVibrator.vibrate(vib);
+                    }
                 }
                 
             }
