@@ -34,11 +34,6 @@ public class ResultView extends View {
     private int mRatioWidth = 0;
     private int mRatioHeight = 0;
 
-    private Map<String, Integer> mapClassHeight;
-
-    // Focal for Galaxy S10+ calculated per callibration process
-    private final static double FOCAL = 1142.85;
-
     public ResultView(Context context) {
         super(context);
     }
@@ -48,24 +43,6 @@ public class ResultView extends View {
         mPaintRectangle = new Paint();
         mPaintRectangle.setColor(Color.YELLOW);
         mPaintText = new Paint();
-
-        mapClassHeight = new HashMap<String, Integer>();
-        mapClassHeight.put("Waste container", 75);
-        mapClassHeight.put("Street Light", 250 );
-        mapClassHeight.put("Tree", 250);
-        mapClassHeight.put("Bench", 83);
-        mapClassHeight.put("Fire hydrant", 075);
-        mapClassHeight.put("Traffic light",060);
-        mapClassHeight.put("Traffic sign", 80);
-        mapClassHeight.put("Chair", 86);
-        mapClassHeight.put("Bicycle", 80);
-        mapClassHeight.put("Table", 76);
-        mapClassHeight.put("Ladder", 200);
-        mapClassHeight.put("Parkin meter", 121);
-        mapClassHeight.put("Flowerpot", 35);
-        mapClassHeight.put("Car", 155);
-        mapClassHeight.put("Bus", 301);
-        mapClassHeight.put("Motorcycle", 109);
 
     }
 
@@ -90,11 +67,7 @@ public class ResultView extends View {
             mPaintText.setStyle(Paint.Style.FILL);
             mPaintText.setTextSize(32);
 
-
-            double objectHeight = mapClassHeight.get(PrePostProcessor.mClasses[result.classIndex]);
-            double distance = (objectHeight * FOCAL) / result.rect.height();
-
-            canvas.drawText(String.format("%s %.2f d:%.1f cm", PrePostProcessor.mClasses[result.classIndex], result.score, distance), result.rect.left + TEXT_X, result.rect.top + TEXT_Y, mPaintText);
+            canvas.drawText(String.format("%s %.2f d:%.1f cm", PrePostProcessor.mClasses[result.classIndex], result.score, result.dist), result.rect.left + TEXT_X, result.rect.top + TEXT_Y, mPaintText);
         }
     }
 

@@ -35,6 +35,10 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
         public AnalysisResult(ArrayList<Result> results) {
             mResults = results;
         }
+
+        public ArrayList<Result> getResults() {
+            return mResults;
+        }
     }
 
     @Override

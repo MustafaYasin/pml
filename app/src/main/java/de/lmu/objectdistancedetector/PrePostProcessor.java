@@ -12,16 +12,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 class Result {
     int classIndex;
     Float score;
     Rect rect;
+    double dist;
 
-    public Result(int cls, Float output, Rect rect) {
+    public Result(int cls, Float output, Rect rect, double dist) {
         this.classIndex = cls;
         this.score = output;
         this.rect = rect;
+        this.dist = dist;
     }
 };
 
@@ -41,6 +45,30 @@ public class PrePostProcessor {
     private static int mNmsLimit = 15;
 
     static String[] mClasses;
+
+    private static Map<String, Integer> mapClassHeight;
+    static {
+        mapClassHeight = new HashMap<String, Integer>();
+        mapClassHeight.put("Waste container", 75);
+        mapClassHeight.put("Street Light", 250);
+        mapClassHeight.put("Tree", 250);
+        mapClassHeight.put("Bench", 83);
+        mapClassHeight.put("Fire hydrant", 075);
+        mapClassHeight.put("Traffic light", 060);
+        mapClassHeight.put("Traffic sign", 80);
+        mapClassHeight.put("Chair", 86);
+        mapClassHeight.put("Bicycle", 80);
+        mapClassHeight.put("Table", 76);
+        mapClassHeight.put("Ladder", 200);
+        mapClassHeight.put("Parkin meter", 121);
+        mapClassHeight.put("Flowerpot", 35);
+        mapClassHeight.put("Car", 155);
+        mapClassHeight.put("Bus", 301);
+        mapClassHeight.put("Motorcycle", 109);
+    }
+
+    // Focal for Galaxy S10+ calculated per callibration process in pixel
+    private final static double FOCAL = 1142.85;
 
     // The two methods nonMaxSuppression and IOU below are ported from https://github.com/hollance/YOLO-CoreML-MPSNNGraph/blob/master/Common/Helpers.swift
     /**
@@ -140,7 +168,11 @@ public class PrePostProcessor {
                 }
 
                 Rect rect = new Rect((int)(startX+ivScaleX*left), (int)(startY+top*ivScaleY), (int)(startX+ivScaleX*right), (int)(startY+ivScaleY*bottom));
-                Result result = new Result(cls, outputs[i*mOutputColumn+4], rect);
+
+                double objectHeight = mapClassHeight.get(PrePostProcessor.mClasses[cls]);
+                double distance = (objectHeight * FOCAL) / rect.height();
+
+                Result result = new Result(cls, outputs[i*mOutputColumn+4], rect, distance);
                 results.add(result);
             }
         }

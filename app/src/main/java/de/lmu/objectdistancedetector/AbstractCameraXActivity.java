@@ -10,6 +10,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.speech.tts.TextToSpeech;
 import android.util.Size;
 import android.view.TextureView;
 import android.widget.Toast;
@@ -25,15 +26,23 @@ import androidx.camera.core.Preview;
 import androidx.camera.core.PreviewConfig;
 import androidx.core.app.ActivityCompat;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
 public abstract class AbstractCameraXActivity<R> extends de.lmu.objectdistancedetector.BaseModuleActivity {
     private static final int REQUEST_CODE_CAMERA_PERMISSION = 200;
     private static final String[] PERMISSIONS = {Manifest.permission.CAMERA};
 
+    private static final int VOICE_OUTPUT_INTERVAL = 5000;
+
     private long mLastAnalysisResultTime;
+    private long mLastOutputTime;
 
     protected abstract int getContentViewLayoutId();
 
     protected abstract TextureView getCameraPreviewTextureView();
+
+    private TextToSpeech mTTS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +60,18 @@ public abstract class AbstractCameraXActivity<R> extends de.lmu.objectdistancede
         } else {
             setupCameraX();
         }
+
+        mTTS=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    mTTS.setLanguage(Locale.UK);
+                }
+            }
+        });
+
+        mLastOutputTime = SystemClock.elapsedRealtime();
+
     }
 
     @Override
@@ -94,6 +115,28 @@ public abstract class AbstractCameraXActivity<R> extends de.lmu.objectdistancede
             if (result != null) {
                 mLastAnalysisResultTime = SystemClock.elapsedRealtime();
                 runOnUiThread(() -> applyToUiAnalyzeImageResult(result));
+
+                //tts test
+                ObjectDetectionActivity.AnalysisResult analysisResult = (ObjectDetectionActivity.AnalysisResult) result;
+                ArrayList<Result> mResults = analysisResult.getResults();
+                Result nearby = null;
+                if (mResults.size() >= 1) {
+                    nearby = mResults.get(0);
+                    for (Result res : mResults) {
+                        if (res.dist < nearby.dist) {
+                            nearby = res;
+                        }
+                    }
+                }
+                
+                if (SystemClock.elapsedRealtime() - mLastOutputTime > VOICE_OUTPUT_INTERVAL && nearby != null) {
+                    mLastOutputTime = SystemClock.elapsedRealtime();
+                    int distCm = (int) Math.round(nearby.dist);
+                    String outputText = PrePostProcessor.mClasses[nearby.classIndex] + " at " + distCm + " centimeter";
+                    Toast.makeText(getApplicationContext(), outputText, Toast.LENGTH_SHORT).show();
+                    mTTS.speak(outputText, TextToSpeech.QUEUE_FLUSH, null);
+                }
+                
             }
         });
 
