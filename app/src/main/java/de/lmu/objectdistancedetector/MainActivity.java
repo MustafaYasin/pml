@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements Runnable {
                 startActivity(intent);
             }
         });
-        
+
         try {
             mModule = LiteModuleLoader.load(MainActivity.assetFilePath(getApplicationContext(), "best_jannis_v1_scripted.ptl"));
             //mModule = Module.load(MainActivity.assetFilePath(getApplicationContext(), "best.torchscript.pt"));

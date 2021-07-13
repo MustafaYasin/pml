@@ -13,6 +13,7 @@ import android.os.SystemClock;
 import android.speech.tts.TextToSpeech;
 import android.util.Size;
 import android.view.TextureView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -40,6 +41,9 @@ public abstract class AbstractCameraXActivity<R> extends de.lmu.objectdistancede
 
     private long mLastAnalysisResultTime;
     private long mLastOutputTime;
+
+    private long mInferenceTime;
+
 
     private Vibrator mVibrator;
 
@@ -117,11 +121,12 @@ public abstract class AbstractCameraXActivity<R> extends de.lmu.objectdistancede
             if (SystemClock.elapsedRealtime() - mLastAnalysisResultTime < 250) {
                 return;
             }
-
+            final long startTime = SystemClock.uptimeMillis();
             final R result = analyzeImage(image, rotationDegrees);
+            mInferenceTime = SystemClock.uptimeMillis() - startTime;
             if (result != null) {
                 mLastAnalysisResultTime = SystemClock.elapsedRealtime();
-                runOnUiThread(() -> applyToUiAnalyzeImageResult(result));
+                runOnUiThread(() -> applyToUiAnalyzeImageResult(result, mInferenceTime));
 
                 //tts and haptic feedback
                 ObjectDetectionActivity.AnalysisResult analysisResult = (ObjectDetectionActivity.AnalysisResult) result;
@@ -173,5 +178,5 @@ public abstract class AbstractCameraXActivity<R> extends de.lmu.objectdistancede
     protected abstract R analyzeImage(ImageProxy image, int rotationDegrees);
 
     @UiThread
-    protected abstract void applyToUiAnalyzeImageResult(R result);
+    protected abstract void applyToUiAnalyzeImageResult(R result, long inferenceTime);
 }

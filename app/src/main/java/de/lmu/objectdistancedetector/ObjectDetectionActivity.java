@@ -9,6 +9,7 @@ import android.graphics.YuvImage;
 import android.media.Image;
 import android.util.Log;
 import android.view.ViewStub;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
@@ -29,6 +30,8 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
     private Module mModule = null;
     private ResultView mResultView;
 
+    private TextView mInferenceTimeTextView;
+
     static class AnalysisResult {
         private final ArrayList<Result> mResults;
 
@@ -48,6 +51,7 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
 
     @Override
     protected de.lmu.objectdistancedetector.AutoFitTextureView getCameraPreviewTextureView() {
+        mInferenceTimeTextView = findViewById(R.id.infereceTimeText);
         mResultView = findViewById(R.id.resultView);
         mResultView.setAspectRatio(3,4);
         return ((ViewStub) findViewById(R.id.object_detection_texture_view_stub))
@@ -56,8 +60,10 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
     }
 
     @Override
-    protected void applyToUiAnalyzeImageResult(AnalysisResult result) {
+    protected void applyToUiAnalyzeImageResult(AnalysisResult result, long inferenceTime) {
         mResultView.setResults(result.mResults);
+        mInferenceTimeTextView.setText("Inference took: " + inferenceTime + " ms");
+        mInferenceTimeTextView.invalidate();
         mResultView.invalidate();
     }
 
