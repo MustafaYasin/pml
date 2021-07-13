@@ -114,7 +114,7 @@ public abstract class AbstractCameraXActivity<R> extends de.lmu.objectdistancede
                 .build();
         final ImageAnalysis imageAnalysis = new ImageAnalysis(imageAnalysisConfig);
         imageAnalysis.setAnalyzer((image, rotationDegrees) -> {
-            if (SystemClock.elapsedRealtime() - mLastAnalysisResultTime < 500) {
+            if (SystemClock.elapsedRealtime() - mLastAnalysisResultTime < 250) {
                 return;
             }
 
@@ -123,7 +123,7 @@ public abstract class AbstractCameraXActivity<R> extends de.lmu.objectdistancede
                 mLastAnalysisResultTime = SystemClock.elapsedRealtime();
                 runOnUiThread(() -> applyToUiAnalyzeImageResult(result));
 
-                //tts test
+                //tts and haptic feedback
                 ObjectDetectionActivity.AnalysisResult analysisResult = (ObjectDetectionActivity.AnalysisResult) result;
                 ArrayList<Result> results = analysisResult.getResults();
                 Result nearby = null;
@@ -139,12 +139,13 @@ public abstract class AbstractCameraXActivity<R> extends de.lmu.objectdistancede
                 if (SystemClock.elapsedRealtime() - mLastOutputTime > VOICE_OUTPUT_INTERVAL && nearby != null) {
                     mLastOutputTime = SystemClock.elapsedRealtime();
                     int distCm = (int) Math.round(nearby.dist);
-                    String outputText = PrePostProcessor.mClasses[nearby.classIndex] + " at " + distCm + " centimeter";
-                    Toast.makeText(getApplicationContext(), outputText, Toast.LENGTH_SHORT).show();
-                    mTTS.speak(outputText, TextToSpeech.QUEUE_FLUSH, null);
-
-                    //haptic feedback for objects closer than 5m
                     if(distCm <= 500) {
+                        int distM = (int) Math.round(distCm/100.0);
+                        String outputText = PrePostProcessor.mClasses[nearby.classIndex] + " at " + distM + " meter";
+                        Toast.makeText(getApplicationContext(), outputText, Toast.LENGTH_SHORT).show();
+                        mTTS.speak(outputText, TextToSpeech.QUEUE_FLUSH, null);
+
+                        //haptic feedback for objects closer than 5m
                         int interval = (int) (5 - Math.floor(distCm/100.0));
                         long[] patternArray = new long[interval*2];
                         int[] a,amplitudesArray = new int[interval*2];
