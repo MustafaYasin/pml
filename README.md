@@ -22,13 +22,11 @@ The results of the different Training approaches you see in the following Graphi
 Due to this Result, we stick with our full training model (no-freezing). For this Approach we got following Correlation Matrix:
 ![Correlation Matrix](correlation.png)
 
-We also observed, that in some Pictures were multiple different objects of different classes. For example here
-![label.png](label.png)
-
-we four chairs labeled, but we take a look at the prediction 
+We also observed, that in some Pictures were multiple different objects of different classes. For example in the left picture there are four chairs labeled.
+![label.png](label.png) 
 ![prediction.png](prediction.png)
 
-we obviusoly lost some chairs, but we gained flowerpots and a bench, so it counts as wrong classified, but it is not that easy to say that. This example is just to keep in mind, not to take the Correlation matrix 1 to 1.
+But if we take a look at the Prediction in the right picture. We obviusoly lost some chairs, but we gained flowerpots and a bench, so it counts as wrong classified, but it is not that easy to say that. This example is just to keep in mind, not to take the Correlation matrix 1 to 1.
 
 ## App and model deployment
 
