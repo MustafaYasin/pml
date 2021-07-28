@@ -13,8 +13,8 @@ Unfortunately not all of the Classes were Part of the YOLOv5 model, so we collec
 
 ### Training
 
-For the Training you need first download the [YOLOv5 Repo from ultralytics](https://github.com/ultralytics/yolov5). Afterwards run the 'requirements.txt' file.
-Then you need to create a new or alter the existing _Dataset.yaml_ file, to specify the classes and its sample locations.
+For the Training you need first download the [YOLOv5 Repo from ultralytics](https://github.com/ultralytics/yolov5). Afterwards run the `requirements.txt` file.
+Then you need to create a new or alter the existing `Dataset.yaml` file, to specify the classes and its sample locations.
 
 ## App and model deployment
 
