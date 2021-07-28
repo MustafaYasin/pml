@@ -1,11 +1,13 @@
 
 # Practical Machine Learning
 
-In this Readme we describe how to train, run and deply our project of the course. The Project's goal was __Asssting visually impaired people in everyday scenarios through AI__. For this Goal we decided to use YOLOv5 which is optimized for edge devices, such as smartphones. 
+In this Readme, we describe how to train, run and deploy our project for the PML course. The Project's goal was __Asssting visually impaired people in everyday scenarios through AI__. For this Goal, we decided to use YOLOv5 which, is optimized for edge devices, such as smartphones. 
 
 ## Data Collection and Training
 
-YOLOv5 already exists in a variety of 80 classes, but for our special case we came to the conclusion, that we only need following 17 classes: _'Waste container', 'Street light', 'Tree', 'Bench', 'Fire hydrant', 'Traffic light', 'Traffic sign', 'Stop sign', 'Chair', 'Bycicle', 'Table', 'Ladder', 'Parking meter','Flowerpot', 'Car', 'Bus', 'Motorcycle'_ due to the fact that this are objects which might appear in a blind's person daily walk, and the object dont move itself.
+YOLOv5 already exists in a variety of 80 classes, but for our special case we conculded, that we only need the following 17 classes: 
+_'Waste container', 'Street light', 'Tree', 'Bench', 'Fire hydrant', 'Traffic light', 'Traffic sign', 'Stop sign', 'Chair', 'Bycicle', 'Table', 'Ladder', 'Parking meter','Flowerpot', 'Car', 'Bus', 'Motorcycle'_.
+Since these are objects which might appear in a blind's person daily walk, and also the ones that dont move.
 
 ### Data Collection
 
