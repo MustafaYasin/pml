@@ -11,7 +11,7 @@ YOLOv5 already exists in a variety of 80 classes, but for our special case we ca
 
 Unfortunately not all of the Classes were Part of the YOLOv5 model, so we collected new Images for the new classes from the [Open Images Dataset V6](https://storage.googleapis.com/openimages/web/index.html).  
 
-###Training
+### Training
 
 
 
