@@ -9,7 +9,7 @@ YOLOv5 already exists in a variety of 80 classes, but for our special case we ca
 
 ### Data Collection
 
-Unfortunately not all of the Classes were Part of the YOLOv5 model, so we collected new Images for the new classes from the [Open Images Dataset V6](https://storage.googleapis.com/openimages/web/index.html).  
+Unfortunately not all of the Classes were Part of the YOLOv5 model, so we collected new labeled Images for the new classes from the [Open Images Dataset V6](https://storage.googleapis.com/openimages/web/index.html). To be able to use them wen convertet the labels with this [OIDv4_ToolKit](https://github.com/EscVM/OIDv4_ToolKit).
 
 ### Training
 
