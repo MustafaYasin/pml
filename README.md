@@ -11,7 +11,7 @@ Since these are objects which might appear in a blind's person daily walk, and a
 
 ### Data Collection
 
-Unfortunately not all of the Classes were Part of the YOLOv5 model, so we collected new labeled Images for the new classes from the [Open Images Dataset V6](https://storage.googleapis.com/openimages/web/index.html). To be able to use them wen convertet the labels with this [OIDv4_ToolKit](https://github.com/EscVM/OIDv4_ToolKit).
+Unfortunately, not all of the Classes were Part of the YOLOv5 model, so we collected new labeled Images for the new classes from the [Open Images Dataset V6](https://storage.googleapis.com/openimages/web/index.html). To be able to use them, we hat had first to convert the labels with the following Tool: [OIDv4_ToolKit](https://github.com/EscVM/OIDv4_ToolKit).
 
 ### Training
 
