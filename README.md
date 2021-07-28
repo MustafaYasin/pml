@@ -22,7 +22,8 @@ The results of the different Training approaches you see in the following Graphi
 Due to this Result, we stick with our full training model (no-freezing). For this Approach we got following Correlation Matrix:
 ![Correlation Matrix](correlation.png)
 
-We also observed, that in some Pictures were multiple different objects of different classes. For example in the left picture there are four chairs labeled.
+We also observed, that in some Pictures were multiple different objects of different classes. 
+For example in the left picture there are four chairs labeled.
           
 ![label.png](label.png) 
 ![prediction.png](prediction.png)
