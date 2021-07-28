@@ -18,7 +18,17 @@ Then you need to create a new or alter the existing `Dataset.yaml` file, to spec
 For the training itself we used the command `python train.py --img 640 --batch 16 --epochs 300 --data yourDataset.yaml --weights yolov5s.pt`. Due to the long training time we tried the training with freezed layers aswell. Just replace the `train.py` with `train_freezed_backbone.py` if u want to freeze the first 10 layers or replace it with `train_freezed_full.py` if you want to freeze all Layers expect the last one. Unfortunately it didn't made as much difference in Training time as we hoped. But we saw a significant decrease in GPU_RAM needed.
 The results of the different Training approaches you see in the following Graphic:
 ![Learning Curves](learning_curves.png)
-Due to this Result, we stick with our full training model (no-freezing).
+
+Due to this Result, we stick with our full training model (no-freezing). For this Approach we got following Correlation Matrix:
+![Correlation Matrix](correlation.png)
+
+We also observed, that in some Pictures were multiple different objects of different classes. For example here
+![label.png](label.png)
+
+we four chairs labeled, but we take a look at the prediction 
+![prediction.png](prediction.png)
+
+we obviusoly lost some chairs, but we gained flowerpots and a bench, so it counts as wrong classified, but it is not that easy to say that. This example is just to keep in mind, not to take the Correlation matrix 1 to 1.
 
 ## App and model deployment
 
